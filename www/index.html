@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: content: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+    <script src="components/loader.js"></script>
+    <link rel="stylesheet" href="components/loader.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        var counter = 0; // カウンタ
+        
+        $(function(){
+            $('#count-up-button').on('touchend',function(){
+                if(counter<9999){
+                    counter++;
+                }
+                console.log('counter:' + counter);
+                img_update();
+            })
+            $('#count-down-button').on('touchend',function(){
+                if(counter>0){
+                    counter--;
+                }
+                console.log('counter:' + counter);
+                img_update();
+            })
+            $('#reset').on('touchend',function(){
+            reset();
+            })
+        });
+        
+        //カウンターをリセットする
+        function reset(){
+            if(counter > 0 && confirm('カウンターをリセットしますか?')){
+                counter = 0;
+                img_update();
+            }
+        }
+        
+        //カウンターの画像を更新するfunction
+        function img_update(){
+            //例 : 1 → 0001
+            //例 : 123 → 0123
+            var sen = Math.floor(counter/1000);
+            var hyaku = Math.floor(counter/100-(sen*10));
+            var jyu = Math.floor(counter/10-(sen*100+hyaku*10));
+            var iti = Math.floor(counter/1-(sen*1000+hyaku*100+jyu*10));
+            
+            console.log(sen);
+            console.log(hyaku);
+            console.log(jyu);
+            console.log(iti);
+            
+            var row_data="";
+
+            row_data += '<img src="img/no_0'+sen+'.png" width="55">';
+            row_data += '<img src="img/no_0'+hyaku+'.png" width="55">';
+            row_data += '<img src="img/no_0'+jyu+'.png" width="55">';
+            row_data += '<img src="img/no_0'+iti+'.png" width="55">';
+            
+            $('#count').html("");
+            
+            $('#count').append(row_data);
+        }
+    </script>
+</head>
+<body>
+	<div id="count">
+    
+	</div>
+    
+    <div>
+        <button id="reset"><img src="img/btn_reset_normal.png" width="64"></button>
+    </div>
+    <button id="count-up-button"><img src="img/btn_count_up.gif" width="127"></button>
+    <button id="count-down-button"><img src="img/btn_count_down.gif" width="127"></button>
+</body>
+</html>
